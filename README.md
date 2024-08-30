@@ -1,4 +1,3 @@
-# rocketseat Education - DDD - Fórum
 
 # 🌟 Projeto de Estudo: Node.js com TypeScript e Domain-Driven Design (DDD)
 
