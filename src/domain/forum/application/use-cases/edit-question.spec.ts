@@ -6,19 +6,19 @@ import { Question } from '../../enterprise/entities/question';
 import { Slug } from '../../enterprise/entities/value-objects/slug';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { makeQuestion } from 'test/factories/make-questions';
-import { DeleteQuestionUseCase } from './delete-question';
+import { EditQuestionUseCase } from './edit-question';
 
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
-let deleteQuestion: DeleteQuestionUseCase
+let editQuestion: EditQuestionUseCase
 
-describe(`Delete Question`, () => {
+describe(`Edit Question`, () => {
   beforeEach(() => {
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
-    deleteQuestion = new DeleteQuestionUseCase(inMemoryQuestionsRepository);
+    editQuestion = new EditQuestionUseCase(inMemoryQuestionsRepository);
   });
 
-  it('should be able to delete a question', async() => {   
+  it('should be able to edit a question', async() => {   
     const newQuestion = makeQuestion({
       slug: Slug.create('example-question'),
       title: 'example-question',
@@ -29,16 +29,21 @@ describe(`Delete Question`, () => {
      newQuestion
     )
 
-    await deleteQuestion.execute({
-      questionId: 'question-1',
-      authorId: 'author-1'
+    await editQuestion.execute({
+      questionId: newQuestion.id.toValue(),
+      authorId: 'author-1',
+      title: 'Pergunta teste',
+      content: 'Conteudo teste',
     })
     
-    expect(inMemoryQuestionsRepository.items).toHaveLength(0)
+    expect(inMemoryQuestionsRepository.items[0]).toMatchObject({
+      title: 'Pergunta teste',
+      content: 'Conteudo teste',
+    })
 
   });
 
-  it('should not be able to delete a question from another user', async() => {   
+  it('should not be able to edit a question from another user', async() => {   
     const newQuestion = makeQuestion({
       slug: Slug.create('example-question'),
       title: 'example-question',
@@ -50,9 +55,11 @@ describe(`Delete Question`, () => {
     )
     
     expect(() => {
-      return deleteQuestion.execute({
+      return editQuestion.execute({
         questionId: 'question-1',
-        authorId: 'author-2'
+        authorId: 'author-2',
+        content: 'pergunta 2',
+        title:'title'
       })
     }).rejects.toBeInstanceOf(Error)
     
