@@ -10,6 +10,7 @@ interface EditQuestionUseCaseRequest {
 }
 
 interface EditQuestionUseCaseResponse {
+  question: Question
 }
 
 export class EditQuestionUseCase {
@@ -34,6 +35,6 @@ export class EditQuestionUseCase {
 
     await this.questionsRepository.save(question);
     
-    return {};
+    return { question };
   }
 }
