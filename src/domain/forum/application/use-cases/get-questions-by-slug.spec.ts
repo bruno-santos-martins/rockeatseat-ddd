@@ -1,12 +1,8 @@
-import { expect, test } from 'vitest'
-import { CreateQuestionUseCase } from './create-question';
+import { expect } from 'vitest'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository';
 import { GetQuestionBySlugUseCase } from './get-question-by-slug';
-import { Question } from '../../enterprise/entities/question';
 import { Slug } from '../../enterprise/entities/value-objects/slug';
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { makeQuestion } from 'test/factories/make-questions';
-
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let getQuestion: GetQuestionBySlugUseCase
