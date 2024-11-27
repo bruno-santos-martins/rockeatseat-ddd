@@ -1,14 +1,18 @@
 import { AnswersRepository } from './../repositories/answers-repository';
 import { Answer } from '../../enterprise/entities/answer';
+import { Either, left, right } from '@/core/either';
+import { NotAllowedError } from './errors/resource-allowed-error';
+import { ResourceNotFoundError } from './errors/resource-not-found-error';
 
 interface FetchQuestionsAnswersUseCaseRequest {
   page: number
   questionId: string
 }
 
-interface FetchQuestionsAnswersUseCaseResponse {
-  answers: Answer[]
-}
+type FetchQuestionsAnswersUseCaseResponse = Either<
+  ResourceNotFoundError | NotAllowedError,
+{ answers: Answer[]}
+>;
 
 export class FetchQuestionsAnswersUseCase {
   constructor(
@@ -20,10 +24,10 @@ export class FetchQuestionsAnswersUseCase {
     const answers = await this.answersRepository.findManyQuestionId(questionId, {page});
     
     if (!answers) {
-      throw new Error('Question not Found');
+      return left(new ResourceNotFoundError());
     }
-    return { 
+    return right({ 
       answers 
-    };
+    });
   }
 }
