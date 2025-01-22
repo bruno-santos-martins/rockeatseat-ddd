@@ -48,13 +48,13 @@ describe(`Delete Question`, () => {
     await inMemoryQuestionsRepository.create(
      newQuestion
     )
+
+    const result = await deleteQuestion.execute({
+      questionId: 'question-1',
+      authorId: 'author-2'
+    });
     
-    expect(() => {
-      return deleteQuestion.execute({
-        questionId: 'question-1',
-        authorId: 'author-2'
-      })
-    }).rejects.toBeInstanceOf(Error)
+    expect(result.isLeft()).toBe(true);
     
   });
 

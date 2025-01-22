@@ -54,14 +54,14 @@ describe(`Edit Question`, () => {
      newQuestion
     )
     
-    expect(() => {
-      return editQuestion.execute({
-        questionId: 'question-1',
-        authorId: 'author-2',
-        content: 'pergunta 2',
-        title:'title'
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await editQuestion.execute({
+      questionId: 'question-1',
+      authorId: 'author-2',
+      content: 'pergunta 2',
+      title:'title'
+    });
+
+   expect(result.isLeft()).toBe(true);
     
   });
 

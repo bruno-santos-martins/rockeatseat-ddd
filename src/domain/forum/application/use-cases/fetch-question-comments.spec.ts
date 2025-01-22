@@ -1,7 +1,9 @@
+import { Question } from './../../enterprise/entities/question';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
 import { FetchQuestionCommentsUseCase } from './fetch-question-comments'
 import { makeQuestionComment } from 'test/factories/make-question-comment'
+import { QuestionComment } from '../../enterprise/entities/question-comment';
 
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
 let sut: FetchQuestionCommentsUseCase
@@ -26,12 +28,12 @@ describe(`Fetch Questions Comments`, () => {
       questionId: new UniqueEntityID('question-1')
     }));
     
-    const { questionComments } = await sut.execute({
+    const questionComments = await sut.execute({
       questionId: 'question-1',
       page: 1
     })
     
-    expect(questionComments).toHaveLength(3);
+    expect((questionComments.value as { questionComments: QuestionComment[] }).questionComments).toHaveLength(3);
   });
 
   it('should be able to fetch paginated questions Comments', async() => {   
@@ -41,11 +43,12 @@ describe(`Fetch Questions Comments`, () => {
       }));
     }
  
-    const { questionComments } = await sut.execute({
+    const  questionComments  = await sut.execute({
       questionId: 'question-1',
       page: 2
     })
-
-    expect(questionComments).toHaveLength(2);
+    
+    expect((questionComments.value as { questionComments: QuestionComment[] }).questionComments).toHaveLength(2);
+    
   });
 });

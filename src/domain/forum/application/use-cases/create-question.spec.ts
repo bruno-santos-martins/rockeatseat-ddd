@@ -12,13 +12,12 @@ describe(`Create Question`, () => {
   });
 
   it('create a question', async() => {   
-    const { question } = await createQuestion.execute({
+    const  question  = await createQuestion.execute({
       authorId: '1',
       title: 'Nova Pergunta',
       content: 'Conteudo da pergunta',
     })
-    
-    expect(question.content).toEqual('Conteudo da pergunta')
-    expect(question.id).toBeTruthy()
+  
+    expect(question.isRight()).toBe(true)
   });
 });

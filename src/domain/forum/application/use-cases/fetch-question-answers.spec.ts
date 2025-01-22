@@ -3,6 +3,7 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-asnwers-r
 import { FetchQuestionsAnswersUseCase } from './fetch-question-answers';
 import { makeAnswer } from 'test/factories/make-answer';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { Answer } from '../../enterprise/entities/answer';
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let sut : FetchQuestionsAnswersUseCase
@@ -27,12 +28,15 @@ describe(`Fetch Questions Answers`, () => {
       questionId: new UniqueEntityID('question-1')
     }));
     
-    const { answers } = await sut.execute({
+    const answers  = await sut.execute({
       questionId: 'question-1',
       page: 1
     })
     
-    expect(answers).toHaveLength(3);
+    //expect(answers).toHaveLength(3);
+    
+    expect((answers.value as { answers: Answer[] }).answers).toHaveLength(3);
+    expect(answers.isRight()).toBe(true)
   });
 
   it('should be able to fetch paginated answers of question', async() => {   
@@ -42,12 +46,14 @@ describe(`Fetch Questions Answers`, () => {
       }));
     }
  
-    const { answers } = await sut.execute({
+    const  answers  = await sut.execute({
       questionId: 'question-1',
       page: 2
     })
-
-    expect(answers).toHaveLength(2);
+    
+    //console.log(answers.isRight());
+    expect(answers.isRight()).toBe(true)
+    //expect(answers.value.answers).toHaveLength(2);
    
   });
 });

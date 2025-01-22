@@ -47,13 +47,13 @@ describe(`Edit Answer`, () => {
      newAnswer
     )
     
-    expect(() => {
-      return editAnswer.execute({
-        answerId: 'answer-1',
-        authorId: 'author-2',
-        content: 'pergunta 2',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await editAnswer.execute({
+      answerId: 'answer-1',
+      authorId: 'author-2',
+      content: 'pergunta 2',
+    });
+
+    expect(result.isLeft()).toBe(true);
     
   });
 

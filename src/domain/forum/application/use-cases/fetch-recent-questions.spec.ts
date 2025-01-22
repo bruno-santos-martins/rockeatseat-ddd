@@ -30,15 +30,16 @@ describe(`Fetch Recent Questions`, () => {
       createdAt: new Date(2023, 0, 23)
     }));
     
-    const { question } = await sut.execute({
+    const  question  = await sut.execute({
       page: 1
     })
     
-    expect(question).toEqual([
+    expect((question.value as { question: Question[]} ).question).toEqual([
       expect.objectContaining({ createdAt: new Date(2023, 0, 23)}),
       expect.objectContaining({ createdAt: new Date(2023, 0, 20)}),
       expect.objectContaining({ createdAt: new Date(2023, 0, 18)})  
     ])
+      
   });
 
   it('should be able to fetch paginated recent questions', async() => {   
@@ -49,11 +50,11 @@ describe(`Fetch Recent Questions`, () => {
       }));
     }
  
-    const { question } = await sut.execute({
+    const  question  = await sut.execute({
       page: 2
     })
-
-    expect(question).toHaveLength(2);
-   
+    
+    expect((question.value as { question: Question[] }).question).toHaveLength(2);
+    
   });
 });
